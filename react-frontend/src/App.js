@@ -11,17 +11,17 @@ function App() {
   useEffect(() => {
     fetchData();
   }, []);
-
-
+  
   const fetchData = async () => {
     try {
       const response = await fetch('http://127.0.0.1:5000/customers-list');
       const jsonData = await response.json();
-
+  
       console.log('API Response:', jsonData);
-
-      if (Array.isArray(jsonData)) {
-        setUsers(jsonData);
+  
+      if (jsonData.Customers && Array.isArray(jsonData.Customers)) {
+        // Assuming jsonData.Customers is an array
+        setUsers(jsonData.Customers);
       } else {
         console.error('Invalid data format:', jsonData);
       }
@@ -29,7 +29,8 @@ function App() {
       console.error('Error', error);
     }
   };
-
+  
+ 
   const handleRegister = async () => {
     try {
       const response = await fetch('http://127.0.0.1:5000/create-customer', {
@@ -70,13 +71,13 @@ function App() {
         <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
       </label>
       <button onClick={handleRegister}>Register</button>
-      <h1>User List</h1>
+      <h1>Customer List</h1>
       <ul>
-        {users.map((user, index) => (
+        {users.map((customer, index) => (
           <li key={index}>
-            <strong>Username:</strong> {user.username},
-            <strong> Password:</strong> {user.password},
-            <strong> Email:</strong> {user.email}
+            <strong>Username:</strong> {customer.username},{' '}
+            <strong>Email:</strong> {customer.email},{' '}
+            <strong>Password:</strong> {customer.password}
           </li>
         ))}
       </ul>
